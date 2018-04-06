@@ -46,4 +46,4 @@ yarn add @flexis/state-manager
 ### `@connect(mapStateToProps, mapActionsToProps, mergeProps, { withRef: bool } = { withRef: false })`
 
 ---
-[![NPM](https://nodei.co/npm/@flexis/state-manager.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/@flexis/state-manager/)
+[![NPM](https://nodeico.herokuapp.com/@flexis/state-manager.svg?downloads=true&downloadRank=true&stars=true)](https://npmjs.com/package/@flexis/state-manager)

@@ -32,7 +32,10 @@ const plugins = [
 	globals()
 ];
 
-const dependencies = Object.keys(pkg.dependencies);
+const dependencies = [].concat(
+	Object.keys(pkg.dependencies),
+	Object.keys(pkg.peerDependencies)
+);
 
 function external(id) {
 	return dependencies.some(_ =>
@@ -47,6 +50,7 @@ export default [{
 	output: [{
 		file:      pkg.main,
 		format:    'cjs',
+		exports:   'named',
 		sourcemap: true
 	}, {
 		file:      pkg.module,
