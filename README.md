@@ -41,9 +41,9 @@ yarn add @flexis/state-manager
 
 ### class Actions(store: Store, namespace?: string)
 
-### <Provider store={store: Store}>{children}</Provder>
+### `<Provider store={store: Store}>{children}</Provder>`
 
-### @connect(mapStateToProps, mapActionsToProps, mergeProps, { withRef: bool } = { withRef: false })
+### `@connect(mapStateToProps, mapActionsToProps, mergeProps, { withRef: bool } = { withRef: false })`
 
 ---
 [![NPM](https://nodei.co/npm/@flexis/state-manager.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/@flexis/state-manager/)
