@@ -1,0 +1,93 @@
+{
+  "name": "@flexis/state-manager",
+  "version": "0.1.0",
+  "description": "State manager for JavaScript apps.",
+  "author": "dangreen",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrigenSoftware/flexis-state-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TrigenSoftware/flexis-state-manager/issues"
+  },
+  "main": "lib/index.js",
+  "module": "lib/index.es.js",
+  "scripts": {
+    "lint": "eslint --cache 'src/**/*.js' 'test/**/*.js'",
+    "test": "npm run lint && NODE_ENV=test nyc jest",
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "state-manager",
+    "reducer",
+    "state",
+    "immutable"
+  ],
+  "dependencies": {
+    "babel-jest": "^22.4.3",
+    "hoist-non-react-statics": "^2.5.0",
+    "immutable": "4.0.0-rc.9"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-istanbul": "^4.1.5",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.3.13",
+    "coveralls": "^3.0.0",
+    "escope": "^3.6.0",
+    "eslint": "^4.10.0",
+    "eslint-config-trigen": "^2.4.0",
+    "eslint-plugin-jest": "^21.15.0",
+    "jest": "^22.4.3",
+    "nyc": "^11.6.0",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.5",
+    "rollup-plugin-eslint": "^4.0.0",
+    "rollup-plugin-node-globals": "^1.1.0",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "> 1%",
+              "last 2 versions",
+              "iOS > 7",
+              "Android > 4.4",
+              "not OperaMini all"
+            ]
+          }
+        }
+      ],
+      "stage-0"
+    ],
+    "plugins": [
+      "add-module-exports",
+      "transform-runtime"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "istanbul"
+        ]
+      }
+    }
+  },
+  "jest": {
+    "testRegex": "(/test/.*\\.spec.js)$"
+  },
+  "files": [
+    "lib"
+  ]
+}
