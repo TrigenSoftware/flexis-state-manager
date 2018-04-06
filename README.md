@@ -29,17 +29,17 @@ yarn add @flexis/state-manager
 
 ## API
 
-### class Store(actions: Object<string, Actions>|Actions)
+### `class Store(actions: Object<string, Actions>|Actions)`
 
-#### destroy(): void
+#### `destroy(): void`
 
-#### subscribe(listener: (state: Immutable.Collection) => void): () => void
+#### `subscribe(listener: (state: Immutable.Collection) => void): () => void`
 
-#### get state(): Immutable.Collection
+#### `get state(): Immutable.Collection`
 
-#### get actions(): Object<string, Object<string, Function>|Function>
+#### `get actions(): Object<string, Object<string, Function>|Function>`
 
-### class Actions(store: Store, namespace?: string)
+### `class Actions(store: Store, namespace?: string)`
 
 ### `<Provider store={store: Store}>{children}</Provder>`
 
