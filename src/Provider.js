@@ -4,7 +4,7 @@ import {
 	createElement
 } from 'react';
 import PropTypes from 'prop-types';
-import Store from '../store';
+import Store from './Store';
 
 export default class Provider extends Component {
 
