@@ -29,21 +29,14 @@ yarn add @flexis/state-manager
 
 ## API
 
-### `class Store(actions: Object<string, Actions>|Actions)`
-
-#### `destroy(): void`
-
-#### `subscribe(listener: (state: Immutable.Collection) => void): () => void`
-
-#### `get state(): Immutable.Collection`
-
-#### `get actions(): Object<string, Object<string, Function>|Function>`
-
-### `class Actions(store: Store, namespace?: string)`
-
-### `<Provider store={store: Store}>{children}</Provder>`
-
-### `@connect(mapStateToProps, mapActionsToProps, mergeProps, { withRef: bool } = { withRef: false })`
+- `class Store(actions: Object<string, Actions>|Actions)`
+    - `destroy(): void`
+    - `subscribe(listener: (state: Immutable.Collection) => void): () => void`
+    - `get state(): Immutable.Collection`
+    - `get actions(): Object<string, Object<string, Function>|Function>`
+- `class Actions(store: Store, namespace?: string)`
+- `<Provider store={store: Store}>{children}</Provder>`
+- `@Connect(mapStateToProps, mapActionsToProps, mergeProps, { withRef: bool } = { withRef: false })`
 
 ---
 [![NPM](https://nodeico.herokuapp.com/@flexis/state-manager.svg)](https://npmjs.com/package/@flexis/state-manager)

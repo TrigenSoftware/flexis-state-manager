@@ -1,6 +1,6 @@
 {
   "name": "@flexis/state-manager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "State manager for JavaScript apps.",
   "author": "dangreen",
   "license": "MIT",
