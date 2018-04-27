@@ -13,7 +13,7 @@ const dummyState = {},
 
 let hotReloadingVersion = 0;
 
-export default function connect(
+export default function Connect(
 	mapStateToProps,
 	mapActionsToProps,
 	mergeProps,

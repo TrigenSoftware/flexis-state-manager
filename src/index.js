@@ -1,9 +1,9 @@
 import Store from './Store';
 import Actions from './Actions';
-import connect from './connect';
+import Connect from './Connect';
 
 export default Store;
 export {
 	Actions,
-	connect
+	Connect
 };
