@@ -1,10 +1,14 @@
-import {
+import React, {
 	Component,
-	Fragment,
-	createElement
+	Fragment
 } from 'react';
 import PropTypes from 'prop-types';
 import Store from './Store';
+import StoreContext from './StoreContext';
+
+const {
+	Provider: StoreContextProvider
+} = StoreContext;
 
 export default class Provider extends Component {
 
@@ -13,44 +17,91 @@ export default class Provider extends Component {
 		children: PropTypes.any.isRequired
 	}
 
-	static childContextTypes = {
-		store: PropTypes.instanceOf(Store).isRequired
-	}
+	unsubscribe = null;
 
-	constructor(props, context) {
+	constructor(props) {
 
-		super(props, context);
+		super(props);
+
+		const {
+			state: storeState,
+			actions
+		} = props.store;
 
 		this.state = {
-			store: props.store
+			storeState, // eslint-disable-line
+			actions // eslint-disable-line
 		};
 	}
 
 	render() {
 
-		const { children } = this.props;
+		const {
+			children
+		} = this.props;
 
-		return createElement(Fragment, null, children);
+		return (
+			<StoreContextProvider value={this.state}>
+				<Fragment>
+					{children}
+				</Fragment>
+			</StoreContextProvider>
+		);
 	}
 
-	getChildContext() {
+	componentDidMount() {
 
-		const { store } = this.state;
+		const {
+			store
+		} = this.props;
 
-		return { store };
+		this.unsubscribe = store.subscribe(() => {
+			this.setState(() => ({
+				storeState: store.state
+			}));
+		});
+	}
+
+	componentWillUnmount() {
+		this.unsubscribe();
 	}
 }
 
 if (process.env.NODE_ENV != 'production') {
 
-	Provider.prototype.componentWillReceiveProps =
-	function componentWillReceiveProps({ store }) {
+	Provider.getDerivedStateFromProps =
+	function getDerivedStateFromProps({ store }, { store: prevStore }) {
 
-		const { store: prevStore } = this.state;
+		if (store === prevStore) {
+			return null;
+		}
 
-		if (store != prevStore) {
-			this.setState(() => ({ store }));
-			prevStore.destroy();
+		prevStore.destroy();
+
+		const {
+			state: storeState,
+			actions
+		} = store;
+
+		return {
+			storeState,
+			actions
+		};
+	};
+
+	Provider.prototype.componentDidUpdate =
+	function componentDidUpdate({ store: prevStore }) {
+
+		const {
+			store
+		} = this.props;
+
+		if (prevStore !== store) {
+			this.unsubscribe = store.subscribe(() => {
+				this.setState(() => ({
+					storeState: store.state
+				}));
+			});
 		}
 	};
 }
