@@ -136,23 +136,24 @@ export default function Connect(
 			};
 		}
 
-		// if (process.env.NODE_ENV != 'production') {
-		// 	Connect.prototype.componentWillUpdate =
-		// 	function componentWillUpdate(nextProps, nextState, { store }) {
+		if (process.env.NODE_ENV != 'production') {
 
-		// 		if (this.version === version) {
-		// 			return;
-		// 		}
+			const {
+				renderChild
+			} = Connect.prototype;
 
-		// 		if (store != this.store) {
-		// 			this.store = store;
-		// 		}
+			Connect.prototype.renderChild =
+			function renderChildWithHotReload(context) {
 
-		// 		this.version = version;
-		// 		this.selector.destroy();
-		// 		this.initSelector();
-		// 	};
-		// }
+				if (this.version !== version) {
+					this.version = version;
+					this.selector.destroy();
+					this.initSelector();
+				}
+
+				Reflect.apply(renderChild, this, [context]);
+			};
+		}
 
 		return hoistNonReactStatics(Connect, WrappedComponent);
 	};
