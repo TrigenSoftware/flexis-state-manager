@@ -148,10 +148,10 @@ export default function Connect(
 				if (this.version !== version) {
 					this.version = version;
 					this.selector.destroy();
-					this.initSelector();
+					this.selector = null;
 				}
 
-				Reflect.apply(renderChild, this, [context]);
+				return Reflect.apply(renderChild, this, [context]);
 			};
 		}
 
