@@ -55,15 +55,21 @@ export default class Actions {
 			if (namespace) {
 				this[methodName] = (...args) => {
 
-					const wasLocked = store._isLocked;
+					const wasLocked = store._isLocked,
+						actionsCallDepthPre = ++store._actionsCallDepth;
 
 					store._isLocked = true;
 
-					const result = Reflect.apply(method, this, args);
+					const result = Reflect.apply(method, this, args),
+						actionsCallDepthPost = store._actionsCallDepth;
+
+					if (actionsCallDepthPre === 1) {
+						store._actionsCallDepth = 0;
+					}
 
 					if (isImmutable(result)) {
 
-						if (wasLocked) {
+						if (actionsCallDepthPost > actionsCallDepthPre) {
 							throw new Error(
 								'Store is locked by another action.'
 							);
@@ -73,25 +79,33 @@ export default class Actions {
 						store._setState(
 							store.state.set(namespace, result)
 						);
+						store._isLocked = wasLocked;
+
 						return;
 					}
 
-					store._isLocked = false;
+					store._isLocked = wasLocked;
 
 					return result; // eslint-disable-line
 				};
 			} else {
 				this[methodName] = (...args) => {
 
-					const wasLocked = store._isLocked;
+					const wasLocked = store._isLocked,
+						actionsCallDepthPre = ++store._actionsCallDepth;
 
 					store._isLocked = true;
 
-					const result = Reflect.apply(method, this, args);
+					const result = Reflect.apply(method, this, args),
+						actionsCallDepthPost = store._actionsCallDepth;
+
+					if (actionsCallDepthPre === 1) {
+						store._actionsCallDepth = 0;
+					}
 
 					if (isImmutable(result)) {
 
-						if (wasLocked) {
+						if (actionsCallDepthPost > actionsCallDepthPre) {
 							throw new Error(
 								'Store is locked by another action.'
 							);
@@ -99,10 +113,12 @@ export default class Actions {
 
 						store._isLocked = false;
 						store._setState(result);
+						store._isLocked = wasLocked;
+
 						return;
 					}
 
-					store._isLocked = false;
+					store._isLocked = wasLocked;
 
 					return result; // eslint-disable-line
 				};

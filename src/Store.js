@@ -50,6 +50,7 @@ export default class Store {
 		this._actions = actions;
 		this._subscriptions = List();
 		this._isLocked = false;
+		this._actionsCallDepth = 0;
 	}
 
 	destroy() {

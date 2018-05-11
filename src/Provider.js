@@ -70,18 +70,21 @@ export default class Provider extends Component {
 if (process.env.NODE_ENV != 'production') {
 
 	Provider.getDerivedStateFromProps =
-	function getDerivedStateFromProps({ store }, { store: prevStore }) {
-
-		if (store === prevStore) {
-			return null;
-		}
-
-		prevStore.destroy();
+	function getDerivedStateFromProps({ store }, {
+		storeState: prevStoreState,
+		actions:    prevActions
+	}) {
 
 		const {
 			state: storeState,
 			actions
 		} = store;
+
+		if (storeState == prevStoreState
+			&& actions == prevActions
+		) {
+			return null;
+		}
 
 		return {
 			storeState,
@@ -97,6 +100,7 @@ if (process.env.NODE_ENV != 'production') {
 		} = this.props;
 
 		if (prevStore !== store) {
+			prevStore.destroy();
 			this.unsubscribe = store.subscribe(() => {
 				this.setState(() => ({
 					storeState: store.state

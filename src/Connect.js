@@ -22,9 +22,6 @@ export default function Connect(
 		withRef: false
 	}
 ) {
-
-	const version = hotReloadingVersion++;
-
 	return (WrappedComponent) => {
 
 		const wrappedComponentName = WrappedComponent.displayName
@@ -41,7 +38,6 @@ export default function Connect(
 			renderChild = this.renderChild.bind(this);
 			onWrappedInstance = this.onWrappedInstance.bind(this);
 
-			version = version;
 			selector = null;
 			wrappedInstance = null;
 			renderedChild = null;
@@ -84,7 +80,7 @@ export default function Connect(
 					);
 				}
 
-				return this.renderChild;
+				return this.renderedChild;
 			}
 
 			componentWillUnmount() {
@@ -142,13 +138,26 @@ export default function Connect(
 				renderChild
 			} = Connect.prototype;
 
+			Connect.version = hotReloadingVersion++;
+
 			Connect.prototype.renderChild =
 			function renderChildWithHotReload(context) {
 
-				if (this.version !== version) {
+				const {
+					version
+				} = this.constructor;
+
+				if (typeof this.version != 'number') {
 					this.version = version;
-					this.selector.destroy();
-					this.selector = null;
+				} else
+				if (this.version !== version) {
+
+					this.version = version;
+
+					if (this.selector !== null) {
+						this.selector.destroy();
+						this.selector = null;
+					}
 				}
 
 				return Reflect.apply(renderChild, this, [context]);

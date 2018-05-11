@@ -7,11 +7,17 @@ export default class Todos extends Actions {
 	static initialState = [];
 
 	async loadItems() {
+		this.setItems([]);
 		await timeout(TIMEOUT);
 		this.setItems([
 			'todo "from server"'
 		]);
 		return true;
+	}
+
+	wrongAction() {
+		this.setItems([]);
+		return this.state.push('wrong!');
 	}
 
 	setItems(items) {

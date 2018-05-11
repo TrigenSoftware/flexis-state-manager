@@ -13,10 +13,17 @@ describe('Actions', () => {
 		]
 	});
 
+	const mockStore = {
+		state:             mockState,
+		_setState:         () => {},
+		_isLocked:         false,
+		_actionsCallDepth: 0
+	};
+
 	it('should create Actions instance', () => {
 
 		const todos = new Todos({
-			state: mockState
+			...mockStore
 		}, 'todos');
 
 		expect(todos.loadItems).toBeInstanceOf(Function);
@@ -28,7 +35,7 @@ describe('Actions', () => {
 	it('should create Actions instance without namespace', () => {
 
 		const todos = new Todos({
-			state: mockState
+			...mockStore
 		});
 
 		expect(todos.loadItems).toBeInstanceOf(Function);
@@ -40,7 +47,7 @@ describe('Actions', () => {
 	it('should define state getters', () => {
 
 		const todos = new Todos({
-			state: mockState
+			...mockStore
 		}, 'todos');
 
 		expect(is(
@@ -57,6 +64,7 @@ describe('Actions', () => {
 	it('should define state getters without namespace', () => {
 
 		const todos = new Todos({
+			...mockStore,
 			state: mockState.get('todos')
 		});
 
@@ -76,12 +84,31 @@ describe('Actions', () => {
 		const setState = jest.fn();
 
 		const todos = new Todos({
-			state:     mockState,
+			...mockStore,
 			_setState: setState
 		}, 'todos');
 
 		todos.addItem('todo');
 		expect(await todos.loadItems()).toBe(true);
-		expect(setState.mock.calls.length).toBe(2);
+		expect(setState.mock.calls.length).toBe(3);
+	});
+
+	it('should prevent reducer call in another reducer', () => {
+
+		const todos = new Todos({
+			...mockStore
+		}, 'todos');
+
+		expect(() => todos.wrongAction()).toThrowError();
+	});
+
+	it('should prevent reducer call in another reducer without namespace', () => {
+
+		const todos = new Todos({
+			...mockStore,
+			state: mockState.get('todos')
+		});
+
+		expect(() => todos.wrongAction()).toThrowError();
 	});
 });
